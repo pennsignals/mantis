@@ -1,0 +1,15 @@
+language: python
+cache: pip
+python:
+- '3.5'
+install:
+- pip install --requirement requirements.txt
+- pip install coveralls
+- pip install flake8
+script:
+- flake8
+- python setup.py nosetests
+after_success: coveralls
+notifications:
+  slack:
+    secure: cAt9rRdVfe2aY+C0UozEeDiZ30thiVWFgNbtNlHfbcDTqinnL7nNebPq+EBa2ITYVMh6nIe6EjEbU3AQXh6tX8FiPKej92hHie/H3EQOpRFi1mwKGU7gjV9xxG5V7Z/1vfy92zMFNxsZes7jsb8fqek+oK2OOWNmOCNUBTo7MfyvvT82moX28eWutgWl33DNMAO5O5HVxSuZjwc/frGq7fH0WViLH4N0MIgN72bQurJ41p2fiyRUO1glPXEt3MFBAaPI/ZkrFhq3CBjmBlt9kLXPeeiLIRVv+d8FGW79amddGbTYohApD8dVMTnYNO6lnXdNi57Fl7U7OPaFWDlzzPrAlZvtS1wol59hsjwUy+i+U9PXv2J1sL3CgmEGEEOr03kZvn+wa4msfisXcWojJQi/G5NtP7tObMcnpa+MUhHrdwfc5vcUKVjaiIw3rRQXa7m/wLPibNdMjgsbLDsI4rrtaGpcwABM+jwXTo81xvSVVx7FrjVG8M6R8q57ZMYJAnbEKMe0KK3FYTFYWTM/CL/gVt/UengWKVvXLTHyh7CD6nLwgk51t5Ka4CgliwIXYWw6lBHAb8rBN384pQbUjhPQCaJ+NfWD92Zb/SiCVh6h5sUKq6/qdtswYY6zHBCIEuuZxQDOVY8ndH8lcAPJ/+f7E+dK5us9zxLMVmpDNzI=
