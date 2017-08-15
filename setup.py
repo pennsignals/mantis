@@ -23,6 +23,7 @@ setup(
         'nose',
         'setuptools_scm',
     ],
+    tests_require=['coverage'],
     use_scm_version=True,
     python_requires='>=3.5'
 )
