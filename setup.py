@@ -25,8 +25,8 @@ setup(
         'setuptools_scm',
     ],
     tests_require=[
-        'coverage',
         'pytest',
+        'pytest-cov',
     ],
     use_scm_version=True,
     python_requires='>=3.5'
