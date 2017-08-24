@@ -3,12 +3,11 @@ cache: pip
 python:
 - '3.5'
 install:
-- pip install --requirement requirements.txt
 - pip install coveralls
 - pip install flake8
 script:
 - flake8
-- python setup.py nosetests
+- python setup.py test
 after_success: coveralls
 notifications:
   slack:

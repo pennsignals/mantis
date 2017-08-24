@@ -12,6 +12,7 @@ setup(
         'License :: OSI Approved :: Apache Software License',
     ],
     install_requires=[
+        'aptos',
         'curio',
     ],
     entry_points={
@@ -20,10 +21,13 @@ setup(
         ],
     },
     setup_requires=[
-        'nose',
+        'pytest-runner',
         'setuptools_scm',
     ],
-    tests_require=['coverage'],
+    tests_require=[
+        'coverage',
+        'pytest',
+    ],
     use_scm_version=True,
     python_requires='>=3.5'
 )
