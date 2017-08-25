@@ -1,0 +1,294 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Spotify Web API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.spotify.com/v1"
+    }
+  ],
+  "paths": {
+    "/albums/{id}": {
+      "get": {
+        "x-request-handler": "",
+        "parameters": [
+          {
+            "name": "market",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlbumFull"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AlbumSimplified": {
+        "type": "object",
+        "properties": {
+          "album_type": {
+            "type": "string"
+          },
+          "artists": {
+            "$ref": "#/components/schemas/ArtistSimplified"
+          },
+          "available_markets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "external_urls": {
+            "$ref": "#/components/schemas/ExternalURL"
+          },
+          "href": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Image"
+            }
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "uri": {
+            "type": "string"
+          }
+        }
+      },
+      "AlbumFull": {
+        "allOf": [
+          { "$ref": "#/components/schemas/AlbumSimplified" },
+          {
+            "type": "object",
+            "properties": {
+              "copyrights": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Copyright"
+                }
+              },
+              "external_ids": {
+                "$ref": "#/components/schemas/ExternalID"
+              },
+              "genres": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "label": {
+                "type": "string"
+              },
+              "popularity": {
+                "type": "integer"
+              },
+              "release_date": {
+                "type": "string"
+              },
+              "release_date_precision": {
+                "type": "string"
+              },
+              "tracks": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/Paging" },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "items": {
+                        "$ref": "#/components/schemas/TrackSimplified"
+                      }
+                    }
+                  }
+                ]
+              },
+              "type": {
+                "type": "string"
+              },
+              "uri": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "ArtistSimplified": {
+        "type": "object",
+        "properties": {
+          "external_urls": {
+            "$ref": "#/components/schemas/ExternalURL"
+          },
+          "href": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "uri": {
+            "type": "string"
+          }
+        }
+      },
+      "Copyright": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "ExternalID": {
+        "type": "object"
+      },
+      "ExternalURL": {
+        "type": "object"
+      },
+      "Image": {
+        "type": "object",
+        "properties": {
+          "height": {
+            "type": "integer"
+          },
+          "url": {
+            "type": "string"
+          },
+          "width": {
+            "type": "integer"
+          }
+        }
+      },
+      "Paging": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "next": {
+            "type": "string"
+          },
+          "offset": {
+            "type": "string"
+          },
+          "previous": {
+            "type": "string"
+          },
+          "total": {
+            "type": "string"
+          }
+        }
+      },
+      "TrackLink": {
+        "type": "object",
+        "properties": {
+          "external_urls": {
+            "$ref": "#/components/schemas/ExternalURL"
+          },
+          "href": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "uri": {
+            "type": "string"
+          }
+        }
+      },
+      "TrackSimplified": {
+        "type": "object",
+        "properties": {
+          "artists": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArtistSimplified"
+            }
+          },
+          "available_markets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "disc_number": {
+            "type": "integer"
+          },
+          "duration_ms": {
+            "type": "integer"
+          },
+          "explicit": {
+            "type": "boolean"
+          },
+          "external_urls": {
+            "$ref": "#/components/schemas/ExternalURL"
+          },
+          "href": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "is_playable": {
+            "type": "boolean"
+          },
+          "linked_from": {
+            "$ref": "#/components/schemas/TrackLink"
+          },
+          "name": {
+            "type": "string"
+          },
+          "preview_url": {
+            "type": "string"
+          },
+          "track_number": {
+            "type": "integer"
+          },
+          "type": {
+            "type": "string"
+          },
+          "uri": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
