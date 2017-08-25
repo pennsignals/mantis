@@ -3,6 +3,14 @@ import re
 
 class Extensible:
 
+    """While the OpenAPI Specification tries to accommodate most use
+    cases, additional data can be added to extend the specification at
+    certain points.
+
+    The extensions properties are implemented as patterned fields that
+    are always prefixed by "x-".
+    """
+
     def __init__(self, **kwargs):
         for name, member in kwargs.items():
             if re.search(r'^x-', name) is not None:
@@ -11,6 +19,9 @@ class Extensible:
 
 
 class OpenAPI(Extensible):
+
+    """This is the root document object of the OpenAPI document.
+    """
 
     def __init__(self, openapi='3.0.0', info=None, servers=None, paths=None, components=None,
                  security=None, tags=None, externalDocs=None, **kwargs):
@@ -36,6 +47,9 @@ class OpenAPI(Extensible):
 
 class Info(Extensible):
 
+    """The object provides metadata about the API.
+    """
+
     def __init__(self, title='', description='', termsOfService='', contact=None, license=None,
                  version='', **kwargs):
         super().__init__(**kwargs)
@@ -60,6 +74,9 @@ class Info(Extensible):
 
 class Contact(Extensible):
 
+    """Contact information for the exposed API.
+    """
+
     def __init__(self, name='', url='', email='', **kwargs):
         super().__init__(**kwargs)
         self.name = name
@@ -68,6 +85,9 @@ class Contact(Extensible):
 
 
 class License(Extensible):
+
+    """License information for the exposed API.
+    """
 
     def __init__(self, name='', url='', **kwargs):
         super().__init__(**kwargs)
@@ -89,6 +109,9 @@ class Servers(list):
 
 class Server(Extensible):
 
+    """An object representing a Server.
+    """
+
     def __init__(self, url='', description='', variables=None, **kwargs):
         super().__init__(**kwargs)
         self.url = url
@@ -102,6 +125,12 @@ class Server(Extensible):
 
 class Paths(dict):
 
+    """Holds the relative paths to the individual endpoints and their
+    operations. The path is appended to the URL from the Server Object
+    in order to construct the full URL. The Paths MAY be empty, due to
+    ACL constraints.
+    """
+
     # TODO: Needs extensible
 
     @classmethod
@@ -112,6 +141,12 @@ class Paths(dict):
 
 
 class PathItem(Extensible):
+
+    """Describes the operations available on a single path. A Path Item
+    MAY be empty, due to ACL constraints. The path itself is still
+    exposed to the documentation viewer but they will not know which
+    operations and parameters are available.
+    """
 
     def __init__(self, summary='', description='', get=None, put=None, post=None, delete=None,
                  options=None, head=None, patch=None, trace=None, servers=None, parameters=None,
@@ -142,6 +177,9 @@ class PathItem(Extensible):
 
 
 class Operation(Extensible):
+
+    """Describes a single API operation on a path.
+    """
 
     def __init__(self, tags=None, summary='', description='', externalDocs=None, operationId='',
                  parameters=None, requestBody=None, responses=None, callbacks=None,
