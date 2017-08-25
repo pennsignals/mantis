@@ -31,6 +31,9 @@ class DefaultRequestHandler(RequestHandler):
 
     DEFAULT_CHARACTER_ENCODING = 'UTF-8'
 
+    def __init__(self, encoding=DEFAULT_CHARACTER_ENCODING):
+        self.encoding = encoding
+
     def before_request(self, request):
         pass
 
