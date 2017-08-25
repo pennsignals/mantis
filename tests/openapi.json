@@ -6,11 +6,11 @@
   },
   "servers": [
     {
-      "url": "https://api.spotify.com/v1"
+      "url": "https://api.spotify.com"
     }
   ],
   "paths": {
-    "/albums/{id}": {
+    "/v1/albums/{id}": {
       "get": {
         "x-request-handler": "",
         "parameters": [

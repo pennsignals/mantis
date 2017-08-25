@@ -1,6 +1,15 @@
 import re
 
 
+class Component:
+
+    def __init__(self, parent):
+        self.parent = parent
+
+    def accept(self, visitor):
+        raise NotImplementedError()
+
+
 class Extensible:
 
     """While the OpenAPI Specification tries to accommodate most use
@@ -202,4 +211,95 @@ class Operation(Extensible):
 
     @classmethod
     def unmarshal(cls, instance):
+        instance = cls(**instance)
+        instance.parameters = Parameters.unmarshal(instance.parameters)
+        instance.responses = Responses.unmarshal(instance.responses)
+        return instance
+
+
+class Parameters(list):
+
+    @classmethod
+    def unmarshal(cls, instance=None):
+        if instance is None:
+            instance = []
+        return cls(Parameter.unmarshal(element) for element in instance)
+
+
+class Parameter(Extensible):
+
+    """Describes a single operation parameter.
+    """
+
+    def __init__(self, name='', description='', required=False, deprecated=False,
+                 allowEmptyValue=None, **kwargs):
+        super().__init__(**kwargs)
+        self.name = name
+        parameterIn = kwargs.get('in', '')
+        assert parameterIn in ('query', 'header', 'path', 'cookie',)
+        self.parameterIn = parameterIn
+        self.description = description
+        self.required = required
+        self.deprecated = deprecated
+        self.allowEmptyValue = allowEmptyValue
+
+    @classmethod
+    def unmarshal(cls, instance):
+        instance = cls(**instance)
+        return instance
+
+
+class MediaType(Extensible):
+
+    def __init__(self, schema=None, example=None, examples=None, encoding=None, **kwargs):
+        super().__init__(**kwargs)
+        self.schema = schema
+        self.example = example
+        self.examples = examples
+        self.encoding = encoding
+
+    @classmethod
+    def unmarshal(cls, instance):
         return cls(**instance)
+
+
+class Responses(dict):
+
+    """A container for the expected responses of an operation.
+    The container maps a HTTP response code to the expected response.
+    """
+
+    def get(self, status, default='default'):
+        get = super().get
+        return get(str(status), get(default))
+
+    @classmethod
+    def unmarshal(cls, instance=None):
+        if instance is None:
+            instance = {}
+        return cls({name: Response.unmarshal(member) for name, member in instance.items()})
+
+
+class Response(Extensible):
+
+    """Describes a single response from an API Operation,
+    including design-time, static links to operations based on the
+    response.
+    """
+
+    def __init__(self, description='', headers=None, content=None, links=None, **kwargs):
+        super().__init__(**kwargs)
+        self.description = description
+        self.headers = headers
+        self.content = content
+        self.links = links
+
+    @classmethod
+    def unmarshal(cls, instance):
+        instance = cls(**instance)
+        if instance.content is None:
+            instance.content = {}
+        instance.content = {
+            name: MediaType.unmarshal(member) for name, member in instance.content.items()
+        }
+        return instance

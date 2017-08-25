@@ -24,8 +24,11 @@ class OpenAPITestCase(BaseTestCase):
         assert isinstance(schema.info.license, model.License)
         assert isinstance(schema.servers, model.Servers)
         assert isinstance(schema.paths, model.Paths)
-        assert isinstance(schema.paths['/albums/{id}'], model.PathItem)
-        assert isinstance(schema.paths['/albums/{id}'].get, model.Operation)
+        path = schema.paths['/v1/albums/{id}']
+        assert isinstance(path, model.PathItem)
+        assert isinstance(path.get, model.Operation)
+        assert isinstance(path.get.responses, model.Responses)
+        assert isinstance(path.get.responses['200'], model.Response)
 
 
 class DefaultServersTestCase(BaseTestCase):
@@ -43,4 +46,4 @@ class SpecificationExtensionsTestCase(BaseTestCase):
     def runTest(self):
         instance = self.instance
         schema = model.OpenAPI.unmarshal(instance)
-        assert hasattr(schema.paths['/albums/{id}'].get, 'x_request_handler')
+        assert hasattr(schema.paths['/v1/albums/{id}'].get, 'x_request_handler')
