@@ -22,11 +22,11 @@ class Requester:
         start = time.time()
         arguments = self.arguments
         invoker = RequestInvoker()
-        invoker.register('OnResponseReceived', DefaultRequestHandler())
+        invoker.register('onRequest', DefaultRequestHandler())
         while True:
             try:
-                command = HTTPCommand(Request(arguments.address, headers=dict(arguments.header)))
-                invoker('OnResponseReceived', command)
+                command = HTTPCommand(Request(arguments.address, headers=arguments.header))
+                invoker('onRequest', command)
                 self.publisher(message=command.body)
                 time.sleep(duration)
             except KeyboardInterrupt:
