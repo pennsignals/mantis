@@ -41,17 +41,16 @@ class HTTPCommand(Command):
 
     def __init__(self, request, opener=None):
         self.request = request
+        self.response = None
         if opener is None:
             opener = urllib.request.build_opener()
         self.opener = opener
-        self.response = None
-        self.body = None
 
     def __call__(self):
         command = self
         with command.opener.open(self.request) as response:
-            command.body = response.read()
-            command.response = response
+            response.body = response.read()
+        command.response = response
         assert response.closed
         identifier = urlparse(command.request.full_url)
         logging.info('Connected to %s', identifier.netloc)
