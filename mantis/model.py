@@ -3,7 +3,7 @@ import re
 
 class Component:
 
-    def __init__(self, parent):
+    def __init__(self, parent=None):
         self.parent = parent
 
     def accept(self, visitor):
@@ -148,6 +148,10 @@ class Paths(dict):
             instance = {}
         return cls({name: PathItem.unmarshal(member) for name, member in instance.items()})
 
+    def accept(self, visitor):
+        for member in self.values():
+            member.accept(visitor)
+
 
 class PathItem(Extensible):
 
@@ -183,6 +187,9 @@ class PathItem(Extensible):
                 operation = {}
             setattr(instance, method, Operation.unmarshal(operation))
         return instance
+
+    def accept(self, visitor):
+        visitor.visit_path(self)
 
 
 class Operation(Extensible):
@@ -270,6 +277,7 @@ class Responses(dict):
     """
 
     def get(self, status, default='default'):
+        # Alias the get method from the parent object
         get = super().get
         return get(str(status), get(default))
 

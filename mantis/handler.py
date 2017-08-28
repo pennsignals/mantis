@@ -1,9 +1,7 @@
-import logging
+import logging  # noqa: E402
+logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)  # noqa: E402
 
-
-class Component:
-
-    pass
+from . import DEFAULT_CHARACTER_ENCODING
 
 
 class RequestHandler:
@@ -26,19 +24,22 @@ class RequestHandler:
         """
         raise NotImplementedError()
 
+    def __call__(self, command):
+        self.before_request(command.request)
+        command()
+        self.after_response(command.request, command.response)
+
 
 class DefaultRequestHandler(RequestHandler):
-
-    DEFAULT_CHARACTER_ENCODING = 'UTF-8'
 
     def __init__(self, encoding=DEFAULT_CHARACTER_ENCODING):
         self.encoding = encoding
 
     def before_request(self, request):
-        pass
+        logging.info(request)
 
     def after_response(self, request, response):
-        pass
+        logging.info(response)
 
     def after_error(self, request, response, e):
-        logging.error(e)
+        pass

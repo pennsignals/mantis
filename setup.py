@@ -14,6 +14,7 @@ setup(
     install_requires=[
         'aptos',
         'curio',
+        'zmq',
     ],
     entry_points={
         'console_scripts': [
