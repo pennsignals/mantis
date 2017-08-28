@@ -34,6 +34,9 @@ def main():
     parser.add_argument('--version', action='version', version=__version__)
 
     arguments = parser.parse_args()
+
+    if arguments.header is None:
+        arguments.header = {}
     arguments.header = dict(arguments.header)
     if arguments.user:
         arguments.header['Authorization'] = arguments.user

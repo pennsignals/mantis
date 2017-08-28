@@ -243,7 +243,6 @@ class Parameter(Extensible):
         super().__init__(**kwargs)
         self.name = name
         parameterIn = kwargs.get('in', '')
-        assert parameterIn in ('query', 'header', 'path', 'cookie',)
         self.parameterIn = parameterIn
         self.description = description
         self.required = required
