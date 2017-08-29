@@ -58,8 +58,6 @@ class Requester:
                     build_opener(HTTPSHandler(context=context))
                 )
                 invoker('onRequest', command)
-                instance = json.loads(command.response.body.decode(DEFAULT_CHARACTER_ENCODING))
-                print(json.dumps(instance, indent=2))
                 self.publisher(message=command.response.body)
                 time.sleep(duration)
             except KeyboardInterrupt:

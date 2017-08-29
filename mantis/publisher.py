@@ -12,5 +12,4 @@ class Publisher:
         self.socket = socket
 
     def __call__(self, topic=b'onResponseReceived', message=b''):
-        print([topic, b'{}', message])
         self.socket.send_multipart([topic, b'{}', message])
