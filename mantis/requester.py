@@ -19,8 +19,12 @@ context = ssl.create_default_context()
 
 def initialize():
     address = '{VAULT_ADDR}/v1/secret/password'.format(VAULT_ADDR=os.environ['VAULT_ADDR'])
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+    opener = build_opener(HTTPSHandler(context=ctx))
     request = Request(address, headers={'X-Vault-Token': os.environ['VAULT_TOKEN']})
-    with urlopen(request) as response, tempfile.NamedTemporaryFile() as f:
+    with opener.open(request) as response, tempfile.NamedTemporaryFile() as f:
         value = json.loads(response.read().decode(DEFAULT_CHARACTER_ENCODING))['data']['value']
         f.write(value.encode(DEFAULT_CHARACTER_ENCODING))
         f.seek(0)
